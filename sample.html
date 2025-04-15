@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <h1>
+        hq 
+        <!-- <img src="https://dqy38fnwh4fqs.cloudfront.net/UHMQL9MP9QBD8OR3BLKQAOOOP8AJ/projects/vibestackf6589d2b-dfe0-4004-ada9-f136d74c29f8.webp?v1.1" alt=""> -->
+    </h1>
+    <p id="date"></p>
+    <p id="try"></p>
+    <script>
+        function getWeekRange() {
+            const startDate = new Date('2024-04-01');
+            // Generate ranges for 10 weeks
+            
+            const ranges = [];
+            let currentDate = new Date(startDate);
+            let weekNo = 14;
+            
+            for(let i = 0; i < 59; i++) {
+                const weekStart = currentDate.getDate();
+                const weekMonth = currentDate.toLocaleString('en-US', { month: 'short' });
+                
+                // Calculate end date of the week
+                let endDate = new Date(currentDate);
+                endDate.setDate(weekStart + 6);
+                const endMonth = endDate.toLocaleString('en-US', { month: 'short' });
+                const weekEnd = endDate.getDate();
+                
+                // Handle month transition
+                if (weekMonth === endMonth) {
+                    ranges.push(`${weekMonth} ${weekStart} - ${weekMonth} ${weekEnd} (Week ${weekNo})`);
+                } else {
+                    ranges.push(`${weekMonth} ${weekStart} - ${endMonth} ${weekEnd} (Week ${weekNo})`);
+                }
+                
+                // Move to next week
+                currentDate.setDate(currentDate.getDate() + 7);
+                weekNo = (weekNo % 52) + 1;
+            }
+            
+            document.getElementById("date").innerHTML = ranges.join('<br>');
+        }
+        
+        getWeekRange();
+    </script>
+</body>
+</html>
+
