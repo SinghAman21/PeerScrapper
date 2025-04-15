@@ -14,12 +14,14 @@ def main():
         print("-" * 40)
         for project in projects:
             print(f"Name: {project['name']}")
-            print(f"Description: {project['description']}")
+            print(f"Publisher: {project['publisher']}")
+            print(f"Tagline: {project['tagline']}")
             print(f"Categories: {', '.join(project['categories'])}")
             print(f"Upvotes: {project['upvotes']}")
             print(f"URL: {project['url']}")
             print(f"Direct Link: {project['direct_link']}")
             print(f"Image URL: {project['image_url']}")
+            print(f"Detailed Description: {project['detailed_description']}")
             print("-" * 40)
 
 if __name__ == "__main__":

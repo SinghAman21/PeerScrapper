@@ -41,7 +41,7 @@ def fetch_webpage(url: str):
 def extract_project_details(project) -> Dict:
     try:
         name = project.find_element(By.CSS_SELECTOR, "[class*='text-gray-1k'][class*='font-semibold'][class*='text-sm']")
-        description = project.find_element(By.CSS_SELECTOR, "[class*='text-gray-1k'][class*='font-normal'][class*='text-sm']")
+        tagline = project.find_element(By.CSS_SELECTOR, "[class*='text-gray-1k'][class*='font-normal'][class*='text-sm']")
         category_tag = project.find_elements(By.CSS_SELECTOR, "[class*='text-gray-500'][class*='font-normal'][class*='text-xs'][class*='paragraph-clamp1']")
         upvotes_tag = project.find_elements(By.CSS_SELECTOR, "[class*='font-semibold'][class*='tabular-nums']")
         
@@ -59,26 +59,41 @@ def extract_project_details(project) -> Dict:
         full_url = f"{project_url}" if project_url else "N/A"
         
         direct_link = "N/A"
+        detailed_description = "N/A"
+        publisher_name = "N/A"
         if project_url:
             project_driver = setup_driver()
             try:
                 project_driver.get(project_url)
                 time.sleep(2)
+                
+                # Get direct link
                 visit_button = project_driver.find_element(By.CSS_SELECTOR, "a[type='button'][target='_blank']")
                 direct_link = visit_button.get_attribute('href')
+                
+                # Get detailed description
+                description_div = project_driver.find_element(By.CSS_SELECTOR, "div[class*='break-words'][class*='text-gray-1k'][class*='rich-text-paragraph-regular']")
+                detailed_description = description_div.text.strip()
+                
+                # Get publisher name
+                publisher_element = project_driver.find_element(By.CSS_SELECTOR, "div.flex.justify-between.items-center a[type='button'] p.text-gray-1k.font-semibold.text-sm")
+                publisher_name = publisher_element.text.strip()
+                
             except Exception as e:
-                print(f"Error extracting direct link: {e}")
+                print(f"Error extracting project page details: {e}")
             finally:
                 project_driver.quit()
 
         return {
             'name': name.text.strip() if name else "N/A",
-            'description': description.text.strip() if description else "N/A",
+            'tagline': tagline.text.strip() if tagline else "N/A",
             'categories': categories,
             'upvotes': upvotes_tag[0].text.strip() if upvotes_tag else "0",
             'url': full_url,
             'direct_link': direct_link,
-            'image_url': image_url
+            'image_url': image_url,
+            'detailed_description': detailed_description,
+            'publisher': publisher_name
         }
     except Exception as e:
         print(f"Error extracting project details: {e}")
