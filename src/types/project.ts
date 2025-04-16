@@ -1,13 +1,12 @@
 export interface Project {
-  id: string
+  id: bigint
   name: string
+  publisher: string
   tagline: string
   categories: string[]
-  upvotes: string
+  upvotes: number
   url: string
   direct_link: string
   image_url: string
-  detailed_description: string
-  publisher: string
-  created_at: string
+  detail_description: string
 }
