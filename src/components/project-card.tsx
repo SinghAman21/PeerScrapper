@@ -17,7 +17,7 @@ export function ProjectCard({ project }: ProjectCardProps) {
         <Image
           src={project.image_url}
           alt={project.name}
-          fill
+          layout="fill"
           className="object-cover"
           priority
         />
